@@ -184,8 +184,10 @@ endif()
 # NOW BUILD OUR TARGET
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${ZLIB_INCLUDE_DIR})
 
+set(PNG_LIBRARIES)
 if(PNG_SHARED)
   add_library(${PNG_LIB_NAME} SHARED ${libpng_sources})
+  set(PNG_LIBRARIES ${PNG_LIB_NAME})
   if(MSVC)
     # msvc does not append 'lib' - do it here to have consistent name
     set_target_properties(${PNG_LIB_NAME} PROPERTIES PREFIX "lib")
@@ -198,6 +200,7 @@ if(PNG_STATIC)
 # does not work without changing name
   set(PNG_LIB_NAME_STATIC ${PNG_LIB_NAME}_static)
   add_library(${PNG_LIB_NAME_STATIC} STATIC ${libpng_sources})
+  set(PNG_LIBRARIES "${PNG_LIBRARIES} ${PNG_LIB_NAME_STATIC}")
   if(MSVC)
     # msvc does not append 'lib' - do it here to have consistent name
     set_target_properties(${PNG_LIB_NAME_STATIC} PROPERTIES PREFIX "lib")
@@ -391,7 +394,7 @@ if(PNG_EXPORT_RULE AND NOT SKIP_INSTALL_EXPORT AND NOT SKIP_INSTALL_ALL )
     "\nGET_FILENAME_COMPONENT( SELF_DIR \"\${CMAKE_CURRENT_LIST_FILE}\" PATH )"
     "\nINCLUDE( \${SELF_DIR}/libpng-targets.cmake )"
     "\nGET_FILENAME_COMPONENT( LIBPNG_INCLUDE_DIRS \"\${SELF_DIR}/../../include\" ABSOLUTE )"
-    "\nSET( LIBPNG_LIBRARIES ${PNG_LIB_NAME_STATIC} ${PNG_LIB_NAME} )"
+    "\nSET( LIBPNG_LIBRARIES ${PNG_LIBRARIES} )"
     "\nSET( LIBPNG_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include )"
     "\nSET( LIBPNG_FOUND TRUE )" 
     "\n\n")
