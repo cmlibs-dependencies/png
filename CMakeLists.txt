@@ -193,7 +193,7 @@ if(PNG_SHARED)
     set_target_properties(${PNG_LIB_NAME} PROPERTIES PREFIX "lib")
     set_target_properties(${PNG_LIB_NAME} PROPERTIES IMPORT_PREFIX "lib")
   endif()
-  target_link_libraries(${PNG_LIB_NAME} ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(${PNG_LIB_NAME} ${ZLIB_LIBRARIES} ${M_LIBRARY})
 endif()
 
 if(PNG_STATIC)
@@ -205,7 +205,7 @@ if(PNG_STATIC)
     # msvc does not append 'lib' - do it here to have consistent name
     set_target_properties(${PNG_LIB_NAME_STATIC} PROPERTIES PREFIX "lib")
   endif()
-  target_link_libraries(${PNG_LIB_NAME_STATIC} ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(${PNG_LIB_NAME_STATIC} ${ZLIB_LIBRARIES} ${M_LIBRARY})
 endif()
 
 
