@@ -284,9 +284,9 @@ endif()
 # targets to an export file.
 # TODO: Use VERSION_GREATER after our cmake_minimum_required >= 2.6.2
 if(CMAKE_MAJOR_VERSION GREATER 1 AND CMAKE_MINOR_VERSION GREATER 4)
-  set(PNG_EXPORT_RULE EXPORT libpng-exports)
+  set(PNG_EXPORT_RULE EXPORT libpng-targets)
 elseif(CMAKE_MAJOR_VERSION GREATER 2) # future proof
-  set(PNG_EXPORT_RULE EXPORT libpng-exports)
+  set(PNG_EXPORT_RULE EXPORT libpng-targets)
 endif()
 
 # INSTALL
@@ -386,6 +386,18 @@ endif()
 # On versions of CMake that support it, create an export file CMake
 # users can include() to import our targets
 if(PNG_EXPORT_RULE AND NOT SKIP_INSTALL_EXPORT AND NOT SKIP_INSTALL_ALL )
+  SET(LIBRARY_CONFIG_FILE ${CMAKE_CURRENT_BINARY_DIR}/libpng-config.cmake)
+  SET(CONFIG_FILE_CONTENTS 
+    "\nGET_FILENAME_COMPONENT( SELF_DIR \"\${CMAKE_CURRENT_LIST_FILE}\" PATH )"
+    "\nINCLUDE( \${SELF_DIR}/libpng-targets.cmake )"
+    "\nGET_FILENAME_COMPONENT( LIBPNG_INCLUDE_DIRS \"\${SELF_DIR}/../../include\" ABSOLUTE )"
+    "\nSET( LIBPNG_LIBRARIES ${PNG_LIB_NAME_STATIC} ${PNG_LIB_NAME} )"
+    "\nSET( LIBPNG_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include )"
+    "\nSET( LIBPNG_FOUND TRUE )" 
+    "\n\n")
+  FILE(WRITE ${LIBRARY_CONFIG_FILE} ${CONFIG_FILE_CONTENTS})
+  INSTALL(FILES ${LIBRARY_CONFIG_FILE} DESTINATION lib/cmake)
+
   install(EXPORT libpng-targets DESTINATION lib/cmake)
 endif()
 
