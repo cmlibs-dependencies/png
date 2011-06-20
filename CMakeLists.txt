@@ -155,12 +155,6 @@ if(MSVC)
   add_definitions(-DPNG_NO_MODULEDEF -D_CRT_SECURE_NO_DEPRECATE)
 endif(MSVC)
 
-if(PNG_SHARED OR  NOT MSVC)
-  #if building msvc static this has NOT to be defined
-  add_definitions(-DZLIB_DLL)
-endif()
-
-
 if(PNG_CONSOLE_IO_SUPPORTED)
   add_definitions(-DPNG_CONSOLE_IO_SUPPORTED)
 endif()
@@ -208,6 +202,10 @@ if(PNG_STATIC)
   target_link_libraries(${PNG_LIB_NAME_STATIC} ${ZLIB_LIBRARIES} ${M_LIBRARY})
 endif()
 
+if(PNG_SHARED OR NOT MSVC)
+  #if building msvc static this has NOT to be defined
+  set_target_properties(${PNG_LIB_NAME} PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
+endif()
 
 if(PNG_SHARED AND WIN32)
   set_target_properties(${PNG_LIB_NAME} PROPERTIES DEFINE_SYMBOL PNG_BUILD_DLL)
@@ -287,9 +285,9 @@ endif()
 # targets to an export file.
 # TODO: Use VERSION_GREATER after our cmake_minimum_required >= 2.6.2
 if(CMAKE_MAJOR_VERSION GREATER 1 AND CMAKE_MINOR_VERSION GREATER 4)
-  set(PNG_EXPORT_RULE EXPORT libpng-targets)
+  set(PNG_EXPORT_RULE EXPORT png-targets)
 elseif(CMAKE_MAJOR_VERSION GREATER 2) # future proof
-  set(PNG_EXPORT_RULE EXPORT libpng-targets)
+  set(PNG_EXPORT_RULE EXPORT png-targets)
 endif()
 
 # INSTALL
@@ -389,18 +387,18 @@ endif()
 # On versions of CMake that support it, create an export file CMake
 # users can include() to import our targets
 if(PNG_EXPORT_RULE AND NOT SKIP_INSTALL_EXPORT AND NOT SKIP_INSTALL_ALL )
-  SET(LIBRARY_CONFIG_FILE ${CMAKE_CURRENT_BINARY_DIR}/libpng-config.cmake)
+  SET(LIBRARY_CONFIG_FILE ${CMAKE_CURRENT_BINARY_DIR}/png-config.cmake)
   SET(CONFIG_FILE_CONTENTS 
     "\nGET_FILENAME_COMPONENT( SELF_DIR \"\${CMAKE_CURRENT_LIST_FILE}\" PATH )"
-    "\nINCLUDE( \${SELF_DIR}/libpng-targets.cmake )"
-    "\nGET_FILENAME_COMPONENT( LIBPNG_INCLUDE_DIRS \"\${SELF_DIR}/../../include\" ABSOLUTE )"
-    "\nSET( LIBPNG_LIBRARIES ${PNG_LIBRARIES} )"
-    "\nSET( LIBPNG_FOUND TRUE )" 
+    "\nINCLUDE( \${SELF_DIR}/png-targets.cmake )"
+    "\nGET_FILENAME_COMPONENT( PNG_INCLUDE_DIRS \"\${SELF_DIR}/../../include\" ABSOLUTE )"
+    "\nSET( PNG_LIBRARIES ${PNG_LIBRARIES} )"
+    "\nSET( PNG_FOUND TRUE )" 
     "\n\n")
   FILE(WRITE ${LIBRARY_CONFIG_FILE} ${CONFIG_FILE_CONTENTS})
   INSTALL(FILES ${LIBRARY_CONFIG_FILE} DESTINATION lib/cmake)
 
-  install(EXPORT libpng-targets DESTINATION lib/cmake)
+  install(EXPORT png-targets DESTINATION lib/cmake)
 endif()
 
 # what's with libpng-$VER%.txt and all the extra files?
