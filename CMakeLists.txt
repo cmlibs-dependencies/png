@@ -147,6 +147,12 @@ set(pngtest_sources
 
 add_definitions(-DPNG_CONFIGURE_LIBPNG)
 
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+	message(STATUS "fpic set")
+	SET_SOURCE_FILES_PROPERTIES(pngerror.c
+		PROPERTIES COMPILE_FLAGS "-fPIC")
+endif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+
 if(_AIX)
   add_definitions(-D_ALL_SOURCE)
 endif(_AIX)
