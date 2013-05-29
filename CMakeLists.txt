@@ -42,10 +42,7 @@ find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIR})
 
 if(NOT WIN32)
-  find_library(M_LIBRARY
-    NAMES m
-    PATHS /usr/lib /usr/local/lib
-  )
+  find_library(M_LIBRARY m)
   if(NOT M_LIBRARY)
     message(STATUS
       "math library 'libm' not found - floating point support disabled")
