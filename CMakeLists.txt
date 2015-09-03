@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 2.4.4)
-set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
+cmake_minimum_required(VERSION 3.0)
 
 project(PNG VERSION 1.5.2 LANGUAGES C)
 # Copyright (C) 2007-2011 Glenn Randers-Pehrson
@@ -127,9 +126,9 @@ if(PNG_SHARED)
   if(WIN32)
     set_target_properties(${PNG_LIB_NAME} PROPERTIES DEFINE_SYMBOL PNG_BUILD_DLL)
   endif()
-  target_link_libraries(${PNG_LIB_NAME_STATIC} zlib)
+  target_link_libraries(${PNG_LIB_NAME} zlib)
   if (UNIX)
-      target_link_libraries(${PNG_LIB_NAME_STATIC} m)
+      target_link_libraries(${PNG_LIB_NAME} m)
   endif()
 endif()
 
@@ -218,19 +217,10 @@ if(PNG_STATIC)
   endif()
 endif()
 
-# If CMake > 2.4.x, we set a variable used below to export
-# targets to an export file.
-# TODO: Use VERSION_GREATER after our cmake_minimum_required >= 2.6.2
-if(CMAKE_MAJOR_VERSION GREATER 1 AND CMAKE_MINOR_VERSION GREATER 4)
-  set(PNG_EXPORT_RULE EXPORT png-targets)
-elseif(CMAKE_MAJOR_VERSION GREATER 2) # future proof
-  set(PNG_EXPORT_RULE EXPORT png-targets)
-endif()
-
 # INSTALL
 if(PNG_SHARED)
     install(TARGETS ${PNG_LIB_NAME}
-        ${PNG_EXPORT_RULE}
+        EXPORT png-config
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -260,9 +250,9 @@ endif()
 
 if(PNG_STATIC)
     install(TARGETS ${PNG_LIB_NAME_STATIC}
-        ${PNG_EXPORT_RULE}
-            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+        EXPORT png-config
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
     if(NOT WIN32 OR CYGWIN)
       IF(CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
          _png_generate_symlink_code(PNG_STATIC_INSTALL_CODE
