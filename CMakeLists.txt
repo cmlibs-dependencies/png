@@ -32,7 +32,7 @@ option(PNG_DEBUG         "Build with debug output" NO)
 option(PNGARG            "FIXME" YES)
 
 # SET LIBNAME
-set(PNG_LIB_NAME png${PNGLIB_MAJOR}${PNGLIB_MINOR})
+set(PNG_LIB_NAME png)
 
 # to distinguish between debug and release lib
 set(CMAKE_DEBUG_POSTFIX "d")
