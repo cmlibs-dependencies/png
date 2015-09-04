@@ -281,7 +281,7 @@ WRITE_BASIC_PACKAGE_VERSION_FILE(${CMAKE_CURRENT_BINARY_DIR}/png-config-version.
     COMPATIBILITY AnyNewerVersion)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake 
     "include(CMakeFindDependencyMacro)\r\n"
-	"set(${PROJECT_NAME}_IMPORT_PREFIX \${_I#MPORT_PREFIX})\r\n"
+	"set(${PROJECT_NAME}_IMPORT_PREFIX \${_IMPORT_PREFIX})\r\n"
 )
 file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake "find_dependency(ZLIB)\r\n")
 #file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/hypre-config-dependencies.cmake "find_dependency(LAPACK ${LAPACK_VERSION})\r\n")
@@ -291,7 +291,7 @@ file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake "find_depe
 #if (WITH_SUPERLU AND NOT SUPERLU_INTERNAL)
 #    file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/hypre-config-dependencies.cmake "find_dependency(SUPERLU)\r\n")
 #endif()
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/hypre-config-dependencies.cmake "set(_IMPORT_PREFIX \${${PROJECT_NAME}_IMPORT_PREFIX})")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake "set(_IMPORT_PREFIX \${${PROJECT_NAME}_IMPORT_PREFIX})")
 install(FILES 
     ${CMAKE_CURRENT_BINARY_DIR}/png-config-version.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake
