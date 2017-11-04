@@ -116,7 +116,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake
     "include(CMakeFindDependencyMacro)\r\n"
 	"set(${PROJECT_NAME}_IMPORT_PREFIX \${_IMPORT_PREFIX})\r\n"
 )
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake "find_dependency(ZLIB)\r\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake "set(ZLIB_FIND_SYSTEM ${ZLIB_FIND_SYSTEM})\r\nfind_dependency(ZLIB)\r\n")
 file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/png-config-dependencies.cmake "set(_IMPORT_PREFIX \${${PROJECT_NAME}_IMPORT_PREFIX})")
 install(FILES 
     ${CMAKE_CURRENT_BINARY_DIR}/png-config-version.cmake
