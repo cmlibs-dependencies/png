@@ -6,6 +6,10 @@
 cmake_minimum_required(VERSION 3.0)
 project(PNG VERSION 1.5.2 LANGUAGES C)
 
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
+
 option(BUILD_TESTS "${PROJECT_NAME} - Build tests" ON)
 set(PACKAGE_CONFIG_DIR "lib/cmake" CACHE STRING "Directory for package config files (relative to CMAKE_INSTALL_PREFIX)")
 
