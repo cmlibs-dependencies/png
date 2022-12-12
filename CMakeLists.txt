@@ -3,7 +3,7 @@
 # This code is released under the libpng license.
 # For conditions of distribution and use, see the disclaimer
 # and license in png.h
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 project(PNG VERSION 1.5.2 LANGUAGES C)
 
 if(POLICY CMP0074)
@@ -59,7 +59,7 @@ set(pngtest_sources
 )
 
 add_library(png ${libpng_sources})
-set_target_properties(png PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
+#set_target_properties(png PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
 if(MSVC)
     # msvc does not append 'lib' - do it here to have consistent name
     set_target_properties(png PROPERTIES PREFIX "lib")
@@ -71,7 +71,21 @@ endif()
 if (ENABLE_PIC)
     set_target_properties(png PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif()
-target_link_libraries(png z)
+if(BUILD_SHARED_LIBS)
+    set(_TARGET_ORDER zlib zlibstatic ZLIB::ZLIB)
+else()
+    set(_TARGET_ORDER zlibstatic zlib ZLIB::ZLIB)
+endif()
+foreach(_T ${_TARGET_ORDER})
+    if( TARGET ${_T} )
+        set(ZLIB_LINK_LIBRARY ${_T}
+        break()
+    endif()
+endforeach()
+if(NOT ZLIB_LINK_LIBRARY)
+    set(ZLIB_LINK_LIBRARY z)
+endif()
+target_link_libraries(png ${ZLIB_LINK_LIBRARY})
 if (UNIX)
     target_link_libraries(png m)
 endif()
