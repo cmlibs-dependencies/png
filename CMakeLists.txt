@@ -78,7 +78,7 @@ else()
 endif()
 foreach(_T ${_TARGET_ORDER})
     if( TARGET ${_T} )
-        set(ZLIB_LINK_LIBRARY ${_T}
+        set(ZLIB_LINK_LIBRARY ${_T})
         break()
     endif()
 endforeach()
