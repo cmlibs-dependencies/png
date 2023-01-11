@@ -59,6 +59,7 @@ set(pngtest_sources
 )
 
 add_library(png ${libpng_sources})
+set_target_properties(png PROPERTIES DEBUG_POSTFIX d)
 #set_target_properties(png PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
 if(MSVC)
     # msvc does not append 'lib' - do it here to have consistent name
