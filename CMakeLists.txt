@@ -3,7 +3,7 @@
 # This code is released under the libpng license.
 # For conditions of distribution and use, see the disclaimer
 # and license in png.h
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.18)
 project(PNG VERSION 1.5.2 LANGUAGES C)
 
 if(POLICY CMP0074)
